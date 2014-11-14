@@ -1,0 +1,42 @@
+sangoへ接続するMQTTクライアントをGo言語で実装する
+
+2014/11/15
+
+吉田 啓二
+yoshida.keiji.84@gmail.com
+http://yoss.si/
+@_yosssi
+
+* はじめに
+
+MQTTブローカサービスの[[https://sango.shiguredo.jp/][sango]]へ接続するMQTTクライアントをGo言語で実装してみましたので、そのソースコードを掲載します。ソースコードは[[https://github.com/yosssi/sango-test][github.com/yosssi/sango-test]]に格納しています。
+
+* Subscribeを行うクライアント
+
+.code 1115-sango/cmd/sango-test-sub/main.go
+
+* Publishを行うクライアント
+
+.code 1115-sango/cmd/sango-test-pub/main.go
+
+* 実行方法
+
+まずは、Subscribeを行うクライアントを起動します。引数にsangoのMQTT Host、sangoのUsername、sangoのPassword、トピックを指定します。以下はコマンドの実行例です。
+
+  $ go run cmd/sango-test-sub/main.go tcp://lite.mqtt.shiguredo.jp:1883 yosssi@github xxxxxxxx yosssi@github/test
+
+続いて、Publishを行うクライアントを起動します。Subscriptを行うクライアントの起動時と同じ引数を指定します。以下はコマンドの実行例です。
+
+  $ go run cmd/sango-test-pub/main.go tcp://lite.mqtt.shiguredo.jp:1883 yosssi@github xxxxxxxx yosssi@github/test
+
+Subscribeを行うクライアントの方で、以下のような受信メッセージが標準出力へ出力されることを確認します。
+
+  Topic: yosssi@github/test
+  Message: Hello sango
+
+* 参考文献
+
+- [[https://sango.shiguredo.jp/][MQTT as a Service sango]]
+- [[http://tdoc.info/blog/2014/09/25/mqtt_golang.html][sangoの使い方 - Golang編 — そこはかとなく書くよん。]]
+- [[http://qiita.com/r_rudi/items/994adea7c1551b9d3748][MQTT の golang クライアントで TLS 接続を試す - Qiita]]
+- [[https://godoc.org/git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git][mqtt - GoDoc]]
