@@ -1,0 +1,62 @@
+Mosquittoへ接続するMQTTクライアントをGo言語で実装する
+
+2014/11/15
+
+吉田 啓二
+yoshida.keiji.84@gmail.com
+http://yoss.si/
+@_yosssi
+
+* はじめに
+
+MQTTブローカの[[http://mosquitto.org/][Mosquitto]]へ接続するMQTTクライアントをGo言語で実装してみましたので、そのソースコードを掲載します。ソースコードは[[https://github.com/yosssi/mosquitto-test][github.com/yosssi/mosquitto-test]]に格納しています。
+
+今回は、[[http://test.mosquitto.org/][Mosquittoの公開サーバ]]をブローカサーバとして使用することとします。
+
+* Subscribeを行うクライアント
+
+.code 1115-mosquitto/cmd/mosquitto-test-sub/main.go
+
+* Publishを行うクライアント
+
+.code 1115-mosquitto/cmd/mosquitto-test-pub/main.go
+
+* 実行方法
+
+まずは、Subscribeを行うクライアントを起動します。以下のコマンドを実行します。
+
+  $ go run cmd/mosquitto-test-sub/main.go
+
+以下の通り、「Subscriptionを開始しました。」というメッセージが出力されることを確認します。
+
+  2014/11/15 22:26:21 ブローカサーバへ接続しています...
+  2014/11/15 22:26:24 ブローカサーバへ接続しました。
+  2014/11/15 22:26:24 Subscriptionを開始しています...
+  2014/11/15 22:26:24 Subscriptionを開始しました。
+
+続いて、Publishを行うクライアントを起動し、Publishを実施します。以下のコマンドを実行します。
+
+  $ go run cmd/mosquitto-test-pub/main.go
+
+Subscribeを行うクライアントの方で、以下のような受信メッセージが標準出力へ出力されることを確認します。
+
+  2014/11/15 22:37:59 メッセージを受信しました。
+  Topic: mosquitto-test
+  Message: Hello MQTT
+
+Publishを行うクライアントの起動時に、-mフラグに任意のメッセージを指定することで、そのメッセージをPublishすることができます。
+
+  $ go run cmd/mosquitto-test-pub/main.go -m こんにちはMQTT
+
+Subscribeを行うクライアントの方では、以下のような受信メッセージが標準出力へ出力されます。
+
+  2014/11/15 22:39:13 メッセージを受信しました。
+  Topic: mosquitto-test
+  Message: こんにちはMQTT
+
+* 参考文献
+
+- [[http://mosquitto.org/][An Open Source MQTT v3.1 Broker]]
+- [[http://test.mosquitto.org/][test.mosquitto.org]]
+- [[http://qiita.com/r_rudi/items/994adea7c1551b9d3748][MQTT の golang クライアントで TLS 接続を試す - Qiita]]
+- [[https://godoc.org/git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git][mqtt - GoDoc]]
