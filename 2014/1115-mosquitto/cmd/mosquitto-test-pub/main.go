@@ -3,8 +3,6 @@ package main
 import (
 	"flag"
 	"log"
-	"os"
-	"os/signal"
 
 	"git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git"
 )
@@ -25,10 +23,6 @@ const (
 const quiesce = 1000
 
 func main() {
-	// シグナル通知設定
-	chSig := make(chan os.Signal, 1)
-	signal.Notify(chSig, os.Interrupt, os.Kill)
-
 	// コマンドラインフラグのパース
 	host := flag.String("h", defHost, "MQTTブローカサーバのホスト名")
 	port := flag.String("p", defPort, "MQTTブローカサーバのポート番号")
