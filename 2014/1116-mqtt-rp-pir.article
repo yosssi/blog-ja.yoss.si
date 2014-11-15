@@ -1,0 +1,80 @@
+Raspberry PiのモーションセンサのデータをGo言語で実装したMQTTクライアントで送受信する
+
+2014/11/16
+
+吉田 啓二
+yoshida.keiji.84@gmail.com
+http://yoss.si/
+@_yosssi
+
+* はじめに
+
+Raspberry PiのモーションセンサのデータをGo言語で実装したMQTTクライアントで送受信してみましたので、そのソースコードを掲載します。ソースコードは[[https://github.com/yosssi/mqtt-rp-pir][yosssi/mqtt-rp-pir]]に格納しています。
+
+今回は、[[http://test.mosquitto.org/][Mosquittoの公開サーバ]]をブローカサーバとして使用することとします。
+
+.image 1116-mqtt-rp-pir/raspberrypi.jpg
+
+* Raspberry Pi、モーションセンサのセットアップ
+
+以下記事の通りセットアップを実施します。
+
+[[https://www.modmypi.com/blog/tutorials/raspberry-pi-gpio-sensing-motion-detection][ModMyPi | Raspberry Pi GPIO Sensing: Motion Detection]]
+
+* Subscribeを行う（モーションセンサからのデータを受信する）クライアント
+
+.code 1116-mqtt-rp-pir/cmd/mqtt-rp-pir-sub/main.go
+
+* モーション検知、Publishを行う、Raspberry Pi + モーションセンサ側のクライアント
+
+.code 1116-mqtt-rp-pir/cmd/mqtt-rp-pir-pub/main.go
+
+* 実行方法
+
+Subscribeを行う端末にて、今回実装したプログラムをインストールします。
+
+  $ go get github.com/yosssi/mqtt-rp-pir/...
+
+以下のコマンドを実行し、Subscribeを行うクライアントを起動します。
+
+  $  mqtt-rp-pir-sub
+
+以下の通り、「Subscriptionを開始しました。」というメッセージが出力されることを確認します。
+
+  2014/11/16 01:10:52 ブローカサーバへ接続しています...
+  2014/11/16 01:10:56 ブローカサーバへ接続しました。
+  2014/11/16 01:10:56 Subscriptionを開始しています...
+  2014/11/16 01:10:56 Subscriptionを開始しました。
+
+続いて、Raspberry Piにて、今回実装したプログラムをインストールします。
+
+  $ go get github.com/yosssi/mqtt-rp-pir/...
+
+以下のコマンドを実行し、モーション検知、Publishを行うクライアントを起動します。
+
+  $  sudo -E mqtt-rp-pir-pub
+
+以下の通り、「モーション検知の準備が完了しました。」というメッセージが出力されることを確認します。
+
+  2014/11/16 01:13:05 ブローカサーバへ接続しています...
+  2014/11/16 01:13:06 ブローカサーバへ接続しました。
+  2014/11/16 01:13:06 モーション検知の準備が完了しました。
+
+モーションセンサが検知できる範囲まで近づき、Publish側のクライアントで、以下のメッセージが出力されることを確認します。
+
+  2014/11/16 01:14:37 モーションを検知しました。
+  2014/11/16 01:14:37 Publishを実施しています...
+  2014/11/16 01:14:37 Publishを実施しました。
+
+Subscribe側のクライアントで、以下のメッセージが出力されることを確認します。
+
+  2014/11/16 01:14:37 2014-11-16 01:14:37.287551592 +0900 JST モーションを検知しました。
+  2014/11/16 01:14:38 2014-11-16 01:14:38.290491878 +0900 JST モーションを検知しました。
+
+* 参考文献
+
+- [[http://mosquitto.org/][An Open Source MQTT v3.1 Broker]]
+- [[http://test.mosquitto.org/][test.mosquitto.org]]
+- [[https://godoc.org/git.eclipse.org/gitroot/paho/org.eclipse.paho.mqtt.golang.git][mqtt - GoDoc]]
+- [[https://www.modmypi.com/blog/tutorials/raspberry-pi-gpio-sensing-motion-detection][ModMyPi | Raspberry Pi GPIO Sensing: Motion Detection]]
+- [[https://github.com/stianeikeland/go-rpio][stianeikeland/go-rpio]]
