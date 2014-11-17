@@ -135,9 +135,11 @@ func connect(cli *mqtt.MqttClient) (chan<- msg, chan struct{}, error) {
 				// Publishの実施
 				log.Println("Publishを実施しています...")
 				receipt := cli.Publish(m.qos, m.topic, m.content)
-				log.Println("Publishを実施しました。")
+
 				// Publishの実施完了を待つ
 				<-receipt
+
+				log.Println("Publishを実施しました。")
 			case <-chConQuit:
 				break PubLoop
 			}
