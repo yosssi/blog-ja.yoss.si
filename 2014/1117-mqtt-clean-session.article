@@ -27,7 +27,7 @@ MQTTの仕様として、「ヘッダ内のCleanSessionフラグが0である（
 
   $ mosquitto_sub -t test_topic -c -i test_id -q 1
 
-その後、Ctrl+qにて、このクライアントのプロセスを終了させます。
+その後、Ctrl+cにて、このクライアントのプロセスを終了させます。
 
 * Publishの実行
 

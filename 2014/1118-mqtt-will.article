@@ -33,7 +33,7 @@ MQTTの仕様に、Willという、クライアントの意図しない切断（
 
   $ mosquitto_sub -t another_test_topic --will-topic test_topic --will-payload WillMessage
 
-その後、Ctrl+qにて、Willを送信するMQTTクライアントを終了します。
+その後、Ctrl+cにて、Willを送信するMQTTクライアントを終了します。
 
 Subscribeを行うMQTTクライアントの方で、以下のWillメッセージが受信・出力されることを確認します。
 
