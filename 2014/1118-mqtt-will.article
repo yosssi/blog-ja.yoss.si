@@ -1,0 +1,45 @@
+MQTTのWillを試す
+
+2014/11/18
+
+吉田 啓二
+yoshida.keiji.84@gmail.com
+http://yoss.si/
+@_yosssi
+
+* はじめに
+
+MQTTの仕様に、Willという、クライアントの意図しない切断（DISCONNECTパケットの送信以外の方法での切断）時に、事前に用意しておいたメッセージを送信するというものがありました（[[http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html#_Will_Flag][MQTT Version 3.1.1 | 3.1.2.4 3.1.2.5 Will Flag]]）ので、[[http://mosquitto.org/][Mosquitto]]を使ってこの挙動を確認してみました。（Mac OS 10.9.5で確認しました。）
+
+* Mosquittoのインストール
+
+「[[http://mosquitto.org/download/][Downloads | Mosquitto]]」のページを参考にしてMosquittoをインストールします。
+
+* Mosquitto MQTTブローカの起動
+
+以下のコマンドを実行し、MQTTブローカを起動します。
+
+  $ mosquitto -c /usr/local/etc/mosquitto/mosquitto.conf
+
+* Subscribeを行うMQTTクライアントの起動
+
+以下のコマンドを実行し、Subscribeを行うMQTTクライアントを起動します。
+
+  $ mosquitto_sub -t test_topic -c -i test_id -q 1
+
+* Willを送信するMQTTクライアントの起動、終了
+
+以下のコマンドを実行し、Willを送信するMQTTクライアントを起動します。
+
+  $ mosquitto_sub -t another_test_topic --will-topic test_topic --will-payload WillMessage
+
+その後、Ctrl+qにて、Willを送信するMQTTクライアントを終了します。
+
+Subscribeを行うMQTTクライアントの方で、以下のWillメッセーが受信・出力されることを確認します。
+
+  WillMessage
+
+* 参考文献
+
+- [[http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html][MQTT Version 3.1.1]]
+- [[http://mosquitto.org/][An Open Source MQTT v3.1 Broker]]
