@@ -25,7 +25,7 @@ MQTTの仕様に、Willという、クライアントの意図しない切断（
 
 以下のコマンドを実行し、Subscribeを行うMQTTクライアントを起動します。
 
-  $ mosquitto_sub -t test_topic -c -i test_id -q 1
+  $ mosquitto_sub -t test_topic
 
 * Willを送信するMQTTクライアントの起動、終了
 
